@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Spikes/pixil-frame-0 (2).png" type="Texture" id=1]
+[ext_resource path="res://Spikes/HitBox.tscn" type="PackedScene" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+[node name="RightSpike" type="Node2D"]
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 16, 0, 16, 16 )
+
+[node name="HitBox" parent="." instance=ExtResource( 2 )]
+
+[node name="CollisionShape2D" parent="HitBox" index="0"]
+position = Vector2( 8, 8 )
+scale = Vector2( 0.8, 0.5 )
+shape = SubResource( 1 )
+
+[editable path="HitBox"]

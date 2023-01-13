@@ -1,0 +1,141 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
+[ext_resource path="res://Player Animations/Pixilart Sprite Sheet (1).png" type="Texture" id=2]
+[ext_resource path="res://Spikes/HurtBox.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Spikes/PlayerArea.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Dash.tscn" type="PackedScene" id=5]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 16.8589
+height = 27.7914
+
+[sub_resource type="Animation" id=2]
+resource_name = "Idle"
+length = 0.1
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "Run"
+length = 0.6
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5 ]
+}
+
+[sub_resource type="CapsuleShape2D" id=4]
+
+[sub_resource type="CapsuleShape2D" id=5]
+
+[node name="Player" type="KinematicBody2D"]
+position = Vector2( 46, 63 )
+collision_mask = 128
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( -0.727539, -31.3589 )
+scale = Vector2( 2.35715, 2.43155 )
+texture = ExtResource( 2 )
+hframes = 14
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.434113, -25.6125 )
+shape = SubResource( 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Idle = SubResource( 2 )
+anims/Run = SubResource( 3 )
+
+[node name="RightWall" type="RayCast2D" parent="."]
+position = Vector2( 1.736, -25 )
+rotation = -1.5708
+enabled = true
+cast_to = Vector2( 0, 17 )
+collision_mask = 128
+
+[node name="RightWall2" type="RayCast2D" parent="."]
+position = Vector2( 1.736, -50 )
+rotation = 4.71239
+enabled = true
+cast_to = Vector2( 0, 17 )
+collision_mask = 128
+
+[node name="RightWall3" type="RayCast2D" parent="."]
+position = Vector2( 1.736, -1.736 )
+rotation = 4.71239
+enabled = true
+cast_to = Vector2( 0, 17 )
+collision_mask = 128
+
+[node name="LeftWall" type="RayCast2D" parent="."]
+position = Vector2( -0.868, -25 )
+rotation = 1.5708
+enabled = true
+cast_to = Vector2( 0, 17 )
+collision_mask = 128
+
+[node name="LeftWall2" type="RayCast2D" parent="."]
+position = Vector2( -0.868, -50 )
+rotation = -4.71239
+enabled = true
+cast_to = Vector2( 0, 17 )
+collision_mask = 128
+
+[node name="LeftWall3" type="RayCast2D" parent="."]
+position = Vector2( -0.868, -1.736 )
+rotation = -4.71239
+enabled = true
+cast_to = Vector2( 0, 17 )
+collision_mask = 128
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.8, 0.8 )
+smoothing_enabled = true
+offset_v = -0.96
+
+[node name="HurtBox" parent="." instance=ExtResource( 3 )]
+
+[node name="CollisionShape2D" parent="HurtBox" index="0"]
+position = Vector2( 0.434, -25.612 )
+scale = Vector2( 1.7, 1.5 )
+shape = SubResource( 4 )
+
+[node name="PlayerArea" parent="." instance=ExtResource( 4 )]
+
+[node name="CollisionShape2D" parent="PlayerArea" index="0"]
+position = Vector2( 0.434, -25.612 )
+scale = Vector2( 1.7, 1.5 )
+shape = SubResource( 5 )
+
+[node name="Dash" parent="." instance=ExtResource( 5 )]
+
+[connection signal="area_entered" from="HurtBox" to="." method="_on_HurtBox_area_entered"]
+
+[editable path="HurtBox"]
+[editable path="PlayerArea"]
+[editable path="Dash"]
